@@ -1,56 +1,126 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Web Metrics Trivia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"/>
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+
+<body>
     <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <br>
-          <hr>
-          <h3>Web Metrics Trivia</h3>
-          <div class="alert alert-success alert-dismissible fade show" role="alert" id="congratulations">
-            <strong>Holy guacamole!</strong> You won the entire game. Look at you go.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </div>
+        <!-- Header Row for Title -->
         <div class="row">
-          <div class="col">
-            <div class="list-group" id="multipleChoiceBlock">
-              <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-              <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-              <a href="#" class="list-group-item list-group-item-action">Vestibulum at eros</a>
+            <div class="col-12"> <br>
+                <h1>Web Metrics Trivia</h1><hr>
             </div>
-          </div>
         </div>
-      </div>
-     
+        <!-- Row for Rules and Basic Intro -->
+        <div class="row">
+                <div class="col-12">
+                    <h3>Game Rules</h3><br>
+                    <p>Welcome to Web Metrics Trivia! The trivia game to test your chops about field and lab metrics.<br>
+                    Each round you'll have 30 seconds to answer as many questions correctly as you can!<strong>  YOU READY?</strong></p>
+                </div>
+            </div><hr>         
+        <!-- Row for High Level Game Data -->
+        <div class="row">
+            <!-- Column for Total # of Rounds Won (x won/ y total) -->
+                <div class="col-4">
+                    <h4>Total # of Rounds Won</h4>
+                    <p id="totalRoundsWon"></p>
+                    <p id="roundsRatioText">out of</p>
+                    <p id="totalRoundsPlayed"></p>
+                </div>
+            <!-- Column for Total % of Questions Answered Correctly Over All Rounds -->
+                <div class="col-4">
+                    <h4>% of Questions Correct</h4>
+                    <p id="totalPercentageCorrect"></p>
+                </div>
+            <!-- Column for Button to Reset Game Stats -->
+                <div class="col-4">
+                    <h4>Reset Game Stats</h4><br>
+                    <button type="button" class="btn btn-warning" id="resetGameButton">RESET</button>
+                </div>
+            </div><br><hr>      
+        <!-- Row for Single Round Data -->
+        <div class="row">
+            <!-- Column for Button to Start New Round -->
+            <div class="col-3">
+                <h4>Start a New Round</h4><br>
+                <button type="button" class="btn btn-primary" id="startRoundButton">BEGIN</button>
+            </div>
+            <!-- Column for Countdown Timer -->
+            <div class="col-3">
+                <h4>Countdown Timer</h4><br>
+                <h5 id="countdownTimer">00:30</h5>    
+            </div>
+            <!-- Column for # of Questions Correct During Round -->
+            <div class="col-3">
+                <h4>Questions Correct</h4><br>
+                <h5 id="questionsCorrect">0</h5>
+            </div>
+            <!-- Column for # of Questions Wrong During Round -->
+            <div class="col-3">
+                <h4>Questions Wrong</h4><br>
+                <h5 id="questionsWrong">0</h5>
+            </div>
+        </div><br><hr> 
+        <!-- Row for Alert Space -->
+        <div class="row">
+            <!-- Column for Displaying Alerts During Gameplay -->
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="wonRoundAlert">
+                        <strong>Holy guacamole!</strong> You won the entire game. Look at you go.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="correctAnswerAlert">
+                        <strong>Ahhhh yisss you got it right!</strong> Keep it up.
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="wrongAnswerAlert">
+                        <strong>Oops.</strong> Noootttttt quite. Keep trying. 
+                </div>
+            </div>
+        </div><br><hr>
+        <!-- Row for Questions and Answer Options -->
+        <div class="row">
+            <!-- Column for Round Question -->
+            <div class="col-6">
+                <h4>Question:</h4><br>
+                <p class="text-primary" id="questionSpace">TESTING</p>
+            </div>
+            <!-- Column for Round Answer Options -->
+            <div class="col-6">
+                <h4>Answer Choices:</h4>
+                <p>Choose which one you think is correct!</p><br>
+                <div class="list-group" id="multipleChoiceBlock">
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption1">Dapibus ac facilisis in</a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption2">Morbi leo risus</a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption3">Porta ac consectetur ac</a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption4">Vestibulum at eros</a>
+                </div>
+            </div>
+        </div>
+        <br><hr><br>
     </div>
-  </body>
-  
-  <script
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    </div>
+</body>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
     crossorigin="anonymous"></script>
-  <script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-  <script src="trivia_logic.js"></script>
+<script src="trivia_logic.js"></script>
+
 </html>
