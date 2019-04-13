@@ -71,19 +71,19 @@
         <div class="row">
             <!-- Column for Displaying Alerts During Gameplay -->
             <div class="col-12">
-                <div class="alert alert-success alert-dismissible fade show" role="alert" id="wonRoundAlert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="wonRoundAlert" style="display:none">
                         <strong>Holy guacamole!</strong> You won the entire game. Look at you go.
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                 </div>
-                <div class="alert alert-success alert-dismissible fade show" role="alert" id="correctAnswerAlert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="correctAnswerAlert" style="display:none">
                         <strong>Ahhhh yisss you got it right!</strong> Keep it up.
                 </div>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="wrongAnswerAlert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="wrongAnswerAlert" style="display:none">
                         <strong>Oops.</strong> Noootttttt quite. Keep trying. 
                 </div>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="timeIsUp">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="timeIsUp" style="display:none">
                         <strong>Time is UP</strong> Round is over.
                 </div>
             </div>
@@ -100,10 +100,10 @@
                 <h4>Answer Choices:</h4>
                 <p>Choose which one you think is correct!</p><br>
                 <div class="list-group" id="multipleChoiceBlock">
-                    <a href="#" class="list-group-item list-group-item-action" id="answerOption1">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item list-group-item-action" id="answerOption2">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action" id="answerOption3">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item list-group-item-action" id="answerOption4">Vestibulum at eros</a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption1" value="a"></a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption2" value="b"></a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption3" value="c"></a>
+                    <a href="#" class="list-group-item list-group-item-action" id="answerOption4" value="d"></a>
                 </div>
             </div>
         </div>
