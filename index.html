@@ -25,27 +25,25 @@
                     <p>Welcome to Web Metrics Trivia! The trivia game to test your chops about field and lab metrics.<br>
                     Each round you'll have 30 seconds to answer as many questions correctly as you can!<strong>  YOU READY?</strong></p>
                 </div>
-            </div><hr>         
+        </div><hr>         
         <!-- Row for High Level Game Data -->
         <div class="row">
             <!-- Column for Total # of Rounds Won (x won/ y total) -->
                 <div class="col-4">
-                    <h4>Total # of Rounds Won</h4>
-                    <p id="totalRoundsWon"></p>
-                    <p id="roundsRatioText">out of</p>
-                    <p id="totalRoundsPlayed"></p>
+                    <h4>Total # of Rounds Won</h4><br>
+                    <h6><span id="totalRoundsWon">0</span> out of <span id="totalRoundsPlayed">0</span></h6>
                 </div>
             <!-- Column for Total % of Questions Answered Correctly Over All Rounds -->
                 <div class="col-4">
-                    <h4>% of Questions Correct</h4>
-                    <p id="totalPercentageCorrect"></p>
+                    <h4>Overall Questions Correct</h4><br>
+                    <h6><span id="totalPercentageCorrect">0</span> % </h6>
                 </div>
             <!-- Column for Button to Reset Game Stats -->
                 <div class="col-4">
                     <h4>Reset Game Stats</h4><br>
                     <button type="button" class="btn btn-warning" id="resetGameButton">RESET</button>
                 </div>
-            </div><br><hr>      
+        </div><br><hr>      
         <!-- Row for Single Round Data -->
         <div class="row">
             <!-- Column for Button to Start New Round -->
@@ -56,7 +54,7 @@
             <!-- Column for Countdown Timer -->
             <div class="col-3">
                 <h4>Countdown Timer</h4><br>
-                <h5 id="countdownTimer">00:30</h5>    
+                <h5 id="countdownTimer">30</h5>    
             </div>
             <!-- Column for # of Questions Correct During Round -->
             <div class="col-3">
@@ -85,8 +83,11 @@
                 <div class="alert alert-danger alert-dismissible fade show" role="alert" id="wrongAnswerAlert">
                         <strong>Oops.</strong> Noootttttt quite. Keep trying. 
                 </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="timeIsUp">
+                        <strong>Time is UP</strong> Round is over.
+                </div>
             </div>
-        </div><br><hr>
+        </div>
         <!-- Row for Questions and Answer Options -->
         <div class="row">
             <!-- Column for Round Question -->
