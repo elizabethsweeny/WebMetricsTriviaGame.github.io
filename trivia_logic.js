@@ -90,70 +90,75 @@ function startGame(){
 
 }
 
-
-
-//$("startRoundButton").click(function startRound()
-
-function startRound(){
+function startTimer(){
     var secondsLeft = 30;
     var interval = setInterval(function () {
-        document.getElementById("countdownTimer").innerHTML = --secondsLeft;
-        newQuestion(0);
-        if (secondsLeft > 0){
-            var i=0;
-            newQuestion(i);
-            var correctAnswer = (questionBank[i].correctAnswer);
-            console.log("Correct answer of given question by index " + correctAnswer);
-            
-            //Finding which answerOptionSpace corresponds to the correct answer.
-                var correctAnswerSpace = "";
-                if (document.getElementById("answerOption1").getAttribute("value") === correctAnswer){
-                    correctAnswerSpace = "answerOption1";
-                }
-                if (document.getElementById("answerOption2").getAttribute("value") === correctAnswer){
-                    correctAnswerSpace = "answerOption2";
-                }
-                if (document.getElementById("answerOption3").getAttribute("value") === correctAnswer){
-                    correctAnswerSpace = "answerOption3";
-                }
-                if (document.getElementById("answerOption4").getAttribute("value") === correctAnswer){
-                    correctAnswerSpace = "answerOption4";
-                }
-                console.log("Correct Answer Space Variable "+ correctAnswerSpace);
-            };
+    document.getElementById("countdownTimer").innerHTML = --secondsLeft;
 
-            //Checking if which option the user clicked is the correct answer or not.
-            $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function () {
-                if (this.id == correctAnswerSpace) {
-                    alert("You chose the right answer!");
-                    
-                    totalCorrect++;
-                    i++;
-                }
+     //If time has run out...
+     if (secondsLeft <= 0) {
+        document.getElementById("countdownTimer").innerHTML = "00";
+        clearInterval(interval);
+        //Show alert that time is up, then hide it.
+        document.getElementById("timeIsUp").style.display = "block";
+        setTimeout(function() {
+            document.getElementById("timeIsUp").style.display = "none";;
+        }, 10000);
+    }
+    return (secondsLeft);
+}, 1000);
+}
 
-                else if (this.id != correctAnswerSpace) {
-                   alert('Incorrect');
-                }
-             });
-
-
-
-        if (secondsLeft <= 0) {
-            document.getElementById("countdownTimer").innerHTML = "00";
-            clearInterval(interval);
-            //Show alert that time is up, then hide it.
-            document.getElementById("timeIsUp").style.display = "block";
-            setTimeout(function() {
-                document.getElementById("timeIsUp").style.display = "none";;
-            }, 10000);
+function startRound(){
+    var i=0;
+    newQuestion(i);
+    startTimer();
+    var correctAnswer = (questionBank[i].correctAnswer);
+    console.log("Correct answer of given question by index " + correctAnswer);
+    
+    //Finding which answerOptionSpace corresponds to the correct answer.
+        var correctAnswerSpace = "";
+        if (document.getElementById("answerOption1").getAttribute("value") === correctAnswer){
+            correctAnswerSpace = "answerOption1";
         }
-    }, 1000);
+        if (document.getElementById("answerOption2").getAttribute("value") === correctAnswer){
+            correctAnswerSpace = "answerOption2";
+        }
+        if (document.getElementById("answerOption3").getAttribute("value") === correctAnswer){
+            correctAnswerSpace = "answerOption3";
+        }
+        if (document.getElementById("answerOption4").getAttribute("value") === correctAnswer){
+            correctAnswerSpace = "answerOption4";
+        }
+        console.log("Correct Answer Space Variable "+ correctAnswerSpace);
+    
+    
+    //Checking if which option the user clicked is the correct answer or not.
+    $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function () {
+        if (this.id == correctAnswerSpace) {
+            document.getElementById("correctAnswerAlert").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("correctAnswerAlert").style.display = "none";;
+            }, 5000);
+            totalCorrect++;
+            i++;
+        }
+
+        else if (this.id != correctAnswerSpace) {
+            document.getElementById("wrongAnswerAlert").style.display = "block";
+            setTimeout(function() {
+                document.getElementById("wrongAnswerAlert").style.display = "none";;
+            }, 5000);
+            i++;
+        }
+    })
 };
+
+
+       
 //});
 
 
-
-startRound();
 
 //Function that serves up a new question.
 function newQuestion(questionNumber){
@@ -183,6 +188,9 @@ newQuestion(0);
 //======================================
 startGame();
 
+$("#startRoundButton").click(function(){
+    startRound();
+});
 
 //SYNTAX REMINDERS
 //======================================
