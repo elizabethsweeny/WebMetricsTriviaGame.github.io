@@ -13,7 +13,7 @@ var totalWrong = 0;
 //QUESTION BANK
 //======================================
 
-var questionBank = [{
+const questionBank = [{
     question: "What is FCP?",
     answers: {
         a: "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
@@ -77,6 +77,7 @@ $("#resetGameButton").click(function() {
     var questionTracker = [false, false, false, false, false, false, false, false, false, false];
 });
 
+
 //Function to update high level game statistics with current global variable values.
 function updateGameScoreText(){
     $("#totalRoundsWon").text(roundsWon);
@@ -90,75 +91,129 @@ function startGame(){
 
 }
 
-function startTimer(){
+
+
+function startTimer() {
     var secondsLeft = 30;
     var interval = setInterval(function () {
-    document.getElementById("countdownTimer").innerHTML = --secondsLeft;
+        document.getElementById("countdownTimer").innerHTML = --secondsLeft;
 
-     //If time has run out...
-     if (secondsLeft <= 0) {
-        document.getElementById("countdownTimer").innerHTML = "00";
-        clearInterval(interval);
-        //Show alert that time is up, then hide it.
-        document.getElementById("timeIsUp").style.display = "block";
-        setTimeout(function() {
-            document.getElementById("timeIsUp").style.display = "none";;
-        }, 10000);
+        //If time has run out...
+        if (secondsLeft === 0) {
+            document.getElementById("countdownTimer").innerHTML = "00";
+            clearInterval(interval);
+            //Show alert that time is up, then hide it.
+            document.getElementById("timeIsUp").style.display = "block";
+            document.getElementById("startRoundButton").disabled = false;
+            setTimeout(function () {
+                document.getElementById("timeIsUp").style.display = "none";
+            }, 10000);
+            return;
+        }
+        }, 1000);
+
+        if (secondsLeft != 0){
+            function startRound(){
+                document.getElementById("startRoundButton").disabled = true;
+                //does this need to be one level up in terms of object? i.e. should it exist outside of the startRound function so that I can increment it?
+                var i = 0;
+                newQuestion(i);
+                var correctAnswer = (questionBank[i].correctAnswer);
+                console.log("Correct answer of given question by index " + correctAnswer);
+
+                //Finding which answerOptionSpace corresponds to the correct answer.
+                var correctAnswerSpace = "";
+                if (document.getElementById("answerOption1").getAttribute("value") === correctAnswer) {
+                    correctAnswerSpace = "answerOption1";
+                }
+                if (document.getElementById("answerOption2").getAttribute("value") === correctAnswer) {
+                    correctAnswerSpace = "answerOption2";
+                }
+                if (document.getElementById("answerOption3").getAttribute("value") === correctAnswer) {
+                    correctAnswerSpace = "answerOption3";
+                }
+                if (document.getElementById("answerOption4").getAttribute("value") === correctAnswer) {
+                    correctAnswerSpace = "answerOption4";
+                }
+                console.log("Correct Answer Space Variable " + correctAnswerSpace);
+
+                //Checking if which option the user clicked is the correct answer or not.
+                $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function () {
+                    if (this.id == correctAnswerSpace) {
+                        document.getElementById("correctAnswerAlert").style.display = "block";
+                        setTimeout(function () {
+                            document.getElementById("correctAnswerAlert").style.display = "none";;
+                        }, 5000);
+                        totalCorrect++;
+                        i++;
+                        startRound();
+                    }
+                    else if (this.id != correctAnswerSpace) {
+                        document.getElementById("wrongAnswerAlert").style.display = "block";
+                        setTimeout(function () {
+                            document.getElementById("wrongAnswerAlert").style.display = "none";;
+                        }, 5000);
+                        i++;
+                    }
+            })
+        }
     }
-    return (secondsLeft);
-}, 1000);
+    startRound();
 }
 
-function startRound(){
-    var i=0;
-    newQuestion(i);
-    startTimer();
-    var correctAnswer = (questionBank[i].correctAnswer);
-    console.log("Correct answer of given question by index " + correctAnswer);
+// function startRound(){
+//     document.getElementById("startRoundButton").disabled = true;
+//     var i=0;
+//     newQuestion(i);
+//     var correctAnswer = (questionBank[i].correctAnswer);
+//     console.log("Correct answer of given question by index " + correctAnswer);
+
+//     //Finding which answerOptionSpace corresponds to the correct answer.
+//         var correctAnswerSpace = "";
+//         if (document.getElementById("answerOption1").getAttribute("value") === correctAnswer){
+//             correctAnswerSpace = "answerOption1";
+//         }
+//         if (document.getElementById("answerOption2").getAttribute("value") === correctAnswer){
+//             correctAnswerSpace = "answerOption2";
+//         }
+//         if (document.getElementById("answerOption3").getAttribute("value") === correctAnswer){
+//             correctAnswerSpace = "answerOption3";
+//         }
+//         if (document.getElementById("answerOption4").getAttribute("value") === correctAnswer){
+//             correctAnswerSpace = "answerOption4";
+//         }
+//         console.log("Correct Answer Space Variable "+ correctAnswerSpace);
     
-    //Finding which answerOptionSpace corresponds to the correct answer.
-        var correctAnswerSpace = "";
-        if (document.getElementById("answerOption1").getAttribute("value") === correctAnswer){
-            correctAnswerSpace = "answerOption1";
-        }
-        if (document.getElementById("answerOption2").getAttribute("value") === correctAnswer){
-            correctAnswerSpace = "answerOption2";
-        }
-        if (document.getElementById("answerOption3").getAttribute("value") === correctAnswer){
-            correctAnswerSpace = "answerOption3";
-        }
-        if (document.getElementById("answerOption4").getAttribute("value") === correctAnswer){
-            correctAnswerSpace = "answerOption4";
-        }
-        console.log("Correct Answer Space Variable "+ correctAnswerSpace);
-    
-    
-    //Checking if which option the user clicked is the correct answer or not.
-    $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function () {
-        if (this.id == correctAnswerSpace) {
-            document.getElementById("correctAnswerAlert").style.display = "block";
-            setTimeout(function() {
-                document.getElementById("correctAnswerAlert").style.display = "none";;
-            }, 5000);
-            totalCorrect++;
-            i++;
-        }
+//     startTimer();
+//     if (document.getElementById("countdownTimer").innerHTML === "0"){
+//         document.getElementById("startRoundButton").disabled = false;
+//         return 0;
+//     }    
+//     if ((document.getElementById("countdownTimer").innerHTML) > "0"){
+//         console.log ("countdownTimer value =" + document.getElementById("countdownTimer").innerHTML);
 
-        else if (this.id != correctAnswerSpace) {
-            document.getElementById("wrongAnswerAlert").style.display = "block";
-            setTimeout(function() {
-                document.getElementById("wrongAnswerAlert").style.display = "none";;
-            }, 5000);
-            i++;
-        }
-    })
-};
-
-
-       
-//});
-
-
+//     //Checking if which option the user clicked is the correct answer or not.
+//     $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function () {
+//         if (this.id == correctAnswerSpace) {
+//             document.getElementById("correctAnswerAlert").style.display = "block";
+//             setTimeout(function() {
+//                 document.getElementById("correctAnswerAlert").style.display = "none";;
+//             }, 5000);
+//             totalCorrect++;
+//             i++;
+//             console.log ("countdownTimer value =" + document.getElementById("countdownTimer").innerHTML);
+//         }
+//         else if (this.id != correctAnswerSpace) {
+//             document.getElementById("wrongAnswerAlert").style.display = "block";
+//             setTimeout(function() {
+//                 document.getElementById("wrongAnswerAlert").style.display = "none";;
+//             }, 5000);
+//             i++;
+//         }
+        
+//     })
+// }
+// };
 
 //Function that serves up a new question.
 function newQuestion(questionNumber){
@@ -189,7 +244,7 @@ newQuestion(0);
 startGame();
 
 $("#startRoundButton").click(function(){
-    startRound();
+    startTimer();
 });
 
 //SYNTAX REMINDERS
