@@ -13,55 +13,33 @@ var totalWrong = 0;
 //QUESTION BANK
 //======================================
 
+const answerBank = [
+    "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
+    "A field and lab metric that tells when the first pixel was painted on the screen.", 
+    "A lab measurement of how fast pixels of the page reach their final position.", 
+    "The time it takes for the browser to receive the first byte from the server, usually HTML.",
+    "A lab and field metric of how long it takes for the “hero” element of the page to become visible", 
+];
+ 
 const questionBank = [{
     question: "What is FCP?",
-    answers: {
-        a: "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
-        b: "A field and lab metric that tells when the first pixel was painted on the screen.", 
-        c: "A lab measurement of how fast pixels of the page reach their final position.", 
-        d: "The time it takes for the browser to receive the first byte from the server, usually HTML.", 
-    },
-    correctAnswer: "b" 
+    correctAnswer: 1
 },
 {
     question: "What is Time to Interactive (TTI)?",
-    answers: {
-        a: "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
-        b: "A field and lab metric that tells when the first pixel was painted on the screen.", 
-        c: "A lab measurement of how fast pixels of the page reach their final position.", 
-        d: "The time it takes for the browser to receive the first byte from the server, usually HTML.", 
-    },
-    correctAnswer: "a"  
+    correctAnswer: 0 
 },
 {
     question: "What is Time to First Byte (TTFB)?",
-    answers: {
-        a: "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
-        b: "A field and lab metric that tells when the first pixel was painted on the screen.", 
-        c: "A lab measurement of how fast pixels of the page reach their final position.", 
-        d: "The time it takes for the browser to receive the first byte from the server, usually HTML.", 
-    },
-    correctAnswer: "d"  
+    correctAnswer: 3  
 },
 {
     question: "What is First Meaningful Paint (FMP)?",
-    answers: {
-        a: "A lab measurement of how fast pixels of the page reach their final position.", 
-        b: "A lab and field metric of how long it takes for the “hero” element of the page to become visible", 
-        c: "A field and lab metric that tells when the first pixel was painted on the screen.", 
-        d: "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
-    },
-    correctAnswer: "b"  
+    correctAnswer: 4  
 },
 {
     question: "What is Speed Index?",
-    answers: {
-        a: "A lab metric that measures when the main thread is quiet enough to respond to user input.", 
-        b: "A field and lab metric that tells when the first pixel was painted on the screen.", 
-        c: "A lab measurement of how fast pixels of the page reach their final position.", 
-        d: "The time it takes for the browser to receive the first byte from the server, usually HTML.", 
-    },
-    correctAnswer: "c" 
+    correctAnswer: 2
 }];
 
 //FUNCTIONS
@@ -86,10 +64,10 @@ function updateGameScoreText(){
     $("#totalPercentageCorrect").text(percentage);
 }
 
-//Function that starts a round of gameplay.
-function startGame(){
+// //Function that starts a round of gameplay.
+// function startGame(){
 
-}
+// }
 
 
 
@@ -118,16 +96,18 @@ function startTimer() {
         if (secondsLeft != 0){
             var questionsCorrect = 0;
             var questionsWrong = 0;
-            var i = 0;
-            var correctAnswerSpace = newQuestion(i);
+            var questionIndex = 0;
+            populateQuestion(questionIndex);
 
             function startRound(){
                 document.getElementById("startRoundButton").disabled = true;
-                document.getElementById("questionSpace").style.display = "block";
+
+                var correctAnswerIndex = questionBank[questionIndex].correctAnswer;
 
                 //Checking if which option the user clicked is the correct answer or not.
                 $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function () {
-                    if (this.id === correctAnswerSpace) {
+                    var clickedAnswerIndex = $(this).data('answerIndex');
+                    if (clickedAnswerIndex === correctAnswerIndex) {
                         document.getElementById("correctAnswerAlert").style.display = "block";
                         setTimeout(function () {
                             document.getElementById("correctAnswerAlert").style.display = "none";;
@@ -135,11 +115,10 @@ function startTimer() {
                         totalCorrect++;
                         questionsCorrect++;
                         document.getElementById("questionsCorrect").innerHTML = questionsCorrect;
-                        i++;
+                        questionIndex++;
                         updateGameScoreText();
-                        if (i < questionBank.length){
-                            newQuestion(i);
-                            correctAnswerSpace = newQuestion(i);
+                        if (questionIndex < questionBank.length){
+                            populateQuestion(questionIndex);
                         }
                         else {
                             alert("Out of questions!");
@@ -157,10 +136,9 @@ function startTimer() {
                         totalWrong++;
                         questionsWrong++;
                         document.getElementById("questionsWrong").innerHTML = questionsWrong;
-                        i++;
-                        if (i < questionBank.length){
-                            newQuestion(i);
-                            correctAnswerSpace = newQuestion(i);
+                        questionIndex++;
+                        if (questionIndex < questionBank.length){
+                            populateQuestion(questionIndex);
                         }
                         else { alert("Out of questions!");
                             if (questionsCorrect < questionsWrong){
@@ -168,6 +146,7 @@ function startTimer() {
                             }
                         }
                     }
+                    return false;
             })
         }
     }
@@ -175,39 +154,40 @@ function startTimer() {
 }
 
 //Function that serves up a new question.
-function newQuestion(questionNumber){
+function populateQuestion(questionIndex){
 
-    var correctAnswer = (questionBank[questionNumber].correctAnswer);
-    var correctAnswerSpace = "";
-
-    $("#questionSpace").text(questionBank[questionNumber].question);
+    var potentialAnswers = [];
+    //Add correct answer to potentialAnswers array.
+    potentialAnswers.push(questionBank[questionIndex].correctAnswer);
     
-    document.getElementById("multipleChoiceBlock").style.display = "block";
+    //Filling potentialAnswers array with three additional non-correct answers at random.
+    while (potentialAnswers.length <4){
+        var answerCandidate = Math.floor(Math.random() * answerBank.length);
+        if (answerCandidate != (questionBank[questionIndex].correctAnswer)){
+            potentialAnswers.push(answerCandidate);
+        }
+    }
 
-    $("#answerOption1").text(questionBank[questionNumber].answers.a);
-    $("#answerOption2").text(questionBank[questionNumber].answers.b);
-    $("#answerOption3").text(questionBank[questionNumber].answers.c);
-    $("#answerOption4").text(questionBank[questionNumber].answers.d);
+    shuffleArray(potentialAnswers);
 
-     //Finding which answerOptionSpace corresponds to the correct answer.
-                
-     if (document.getElementById("answerOption1").getAttribute("value") === correctAnswer) {
-        correctAnswerSpace = "answerOption1";
-    }
-    if (document.getElementById("answerOption2").getAttribute("value") === correctAnswer) {
-        correctAnswerSpace = "answerOption2";
-    }
-    if (document.getElementById("answerOption3").getAttribute("value") === correctAnswer) {
-        correctAnswerSpace = "answerOption3";
-    }
-    if (document.getElementById("answerOption4").getAttribute("value") === correctAnswer) {
-        correctAnswerSpace = "answerOption4";
-    }
-    console.log("Correct Answer Space Variable " + correctAnswerSpace);
-    return correctAnswerSpace;    
+    document.getElementById("questionSpace").style.display = "block";
+    $("#questionSpace").text(questionBank[questionIndex].question);
+    document.getElementById("multipleChoiceBlock").style.display = `block`;
+
+    //Placing the now randomized answer string into the multipleChoiceBlock, saving correct answer integer into data.
+     $("#answerOption1").data('answerIndex', potentialAnswers[0]).text(answerBank[potentialAnswers[0]]);
+     $("#answerOption2").data('answerIndex', potentialAnswers[1]).text(answerBank[potentialAnswers[1]]);
+     $("#answerOption3").data('answerIndex', potentialAnswers[2]).text(answerBank[potentialAnswers[2]]);
+     $("#answerOption4").data('answerIndex', potentialAnswers[3]).text(answerBank[potentialAnswers[3]]);
+   
 };
 
-
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 //TEST BENCH
 //======================================
@@ -217,12 +197,12 @@ function newQuestion(questionNumber){
 // $("#answerOption1").text(randomIncorrect);
 
 //TEST new question, only to be called within start round (DELETE)
-//newQuestion(0);
+//populateQuestion(0);
 
 
 //INITIALIZING GAME
 //======================================
-startGame();
+//startGame();
 
 $("#startRoundButton").click(function(){
     startTimer();
