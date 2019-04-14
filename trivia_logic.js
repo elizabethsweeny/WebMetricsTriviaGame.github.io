@@ -100,9 +100,9 @@ $(document).ready(function() {
         function startRound() {
             document.getElementById("startRoundButton").disabled = true;
 
-            var correctAnswerIndex = questionBank[questionIndex].correctAnswer;
             //Checking if which option the user clicked is the correct answer or not.
             $("#answerOption1, #answerOption2, #answerOption3, #answerOption4").click(function() {
+                var correctAnswerIndex = questionBank[questionIndex].correctAnswer;
                 var clickedAnswerIndex = $(this).data("answerIndex");
                 if (clickedAnswerIndex === correctAnswerIndex) {
                     document.getElementById("correctAnswerAlert").style.display = "block";
